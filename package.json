@@ -1,0 +1,35 @@
+{
+  "name": "tarno",
+  "private": true,
+  "version": "1.0.0-phase1",
+  "type": "module",
+  "description": "تارنو — بازارگاه تخصصی مدیریت و فروش موجودی مازاد پارچه (فاز ۱)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test:domain": "esbuild tests/domain.test.ts --bundle --platform=node --format=esm --outfile=.test-build/domain.test.mjs --log-level=warning && node .test-build/domain.test.mjs",
+    "test:render": "esbuild tests/render.smoke.tsx --bundle --platform=node --format=esm --jsx=automatic --outfile=.test-build/render.smoke.mjs --log-level=warning --external:react --external:react-dom --external:react-dom/server --external:react-router-dom --external:framer-motion && node .test-build/render.smoke.mjs",
+    "test": "npm run test:domain && npm run test:render && npm run test:ui",
+    "build:artifact": "npm run build && node scripts/make-artifact.mjs",
+    "test:ui": "esbuild tests/ui.integration.tsx --bundle --platform=node --format=esm --jsx=automatic --outfile=.test-build/ui.integration.mjs --log-level=warning --external:react --external:react-dom --external:react-dom/client --external:react-dom/test-utils --external:react-router-dom --external:framer-motion --external:jsdom && node .test-build/ui.integration.mjs"
+  },
+  "dependencies": {
+    "framer-motion": "^11.11.17",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^31.0.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
