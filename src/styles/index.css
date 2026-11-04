@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   سیستم طراحی تارنو — پالت «رنگ‌خانه»: نیل (ایندیگو) + روناس روی زمینه پارچه خام
+   همه رنگ‌ها فقط در این بلوک تعریف می‌شوند و بقیه کد از نقش‌ها استفاده می‌کند.
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  --ink: #121a24;
+  --text-body: #2c3542;
+  --text-muted: #67707d;
+
+  --ground: #eff1ec;          /* زمینه صفحه: نخ خام */
+  --surface: #ffffff;
+  --surface-raised: #f7f8f5;
+  --line: #dfe2da;
+  --line-strong: #c6cabf;
+
+  --indigo-900: #152a47;      /* نیل تیره */
+  --indigo-700: #22436f;
+  --indigo-500: #35649e;
+  --indigo-100: #e3eaf4;
+
+  --madder-600: #a8402f;      /* روناس */
+  --madder-100: #f6e4e0;
+
+  --ok: #1f6f4a;
+  --warn: #9a6400;
+  --danger: #b03227;
+
+  /* نقش‌های نمودار (پالت اعتبارسنجی‌شده data-viz) */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --grid: #e2e5dd;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --ink: #f2f4f1;
+    --text-body: #d6dad2;
+    --text-muted: #9aa3a0;
+
+    --ground: #11161a;
+    --surface: #181e24;
+    --surface-raised: #1f262d;
+    --line: #2c3540;
+    --line-strong: #3d4854;
+
+    --indigo-900: #cddcf1;
+    --indigo-700: #8fb4e2;
+    --indigo-500: #6f9cd4;
+    --indigo-100: #1d2c3f;
+
+    --madder-600: #e08573;
+    --madder-100: #35211d;
+
+    --ok: #5cc48d;
+    --warn: #e0a734;
+    --danger: #ef8279;
+
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
+    --series-8: #e66767;
+    --grid: #27303a;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --ink: #f2f4f1;
+  --text-body: #d6dad2;
+  --text-muted: #9aa3a0;
+
+  --ground: #11161a;
+  --surface: #181e24;
+  --surface-raised: #1f262d;
+  --line: #2c3540;
+  --line-strong: #3d4854;
+
+  --indigo-900: #cddcf1;
+  --indigo-700: #8fb4e2;
+  --indigo-500: #6f9cd4;
+  --indigo-100: #1d2c3f;
+
+  --madder-600: #e08573;
+  --madder-100: #35211d;
+
+  --ok: #5cc48d;
+  --warn: #e0a734;
+  --danger: #ef8279;
+
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --series-7: #9085e9;
+  --series-8: #e66767;
+  --grid: #27303a;
+}
+
+html,
+body {
+  background: var(--ground);
+}
+
+body {
+  margin: 0;
+  color: var(--text-body);
+  font-family: 'Vazirmatn', Tahoma, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--ink);
+  text-wrap: balance;
+  line-height: 1.4;
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--indigo-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--indigo-100);
+  color: var(--ink);
+}
+
+@layer components {
+  .plate {
+    @apply bg-surface border border-line rounded-card;
+  }
+  .label-eyebrow {
+    @apply text-[11px] font-semibold tracking-[.14em] text-muted uppercase;
+  }
+  .prose-fa p {
+    @apply max-w-reading leading-[1.95] text-body;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* نوار اسکرول سبک برای پنل‌های داخلی */
+.thin-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 99px; }
+.thin-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* الگوی «تار و پود» — بافت تزئینی بسیار کم‌رنگ برای سربرگ‌ها */
+.weave {
+  background-image:
+    repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 7px);
+  opacity: 0.5;
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
