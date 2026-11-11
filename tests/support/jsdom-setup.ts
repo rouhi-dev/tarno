@@ -46,6 +46,10 @@ class StubObserver {
 }
 g.IntersectionObserver = StubObserver;
 g.ResizeObserver = StubObserver;
+
+/** jsdom متد پیمایش به عنصر را پیاده نکرده است؛ بدل بی‌اثر کافی است. */
+dom.window.HTMLElement.prototype.scrollIntoView = () => {};
+dom.window.scrollTo = () => {};
 (dom.window as unknown as Record<string, unknown>).IntersectionObserver = StubObserver;
 (dom.window as unknown as Record<string, unknown>).ResizeObserver = StubObserver;
 

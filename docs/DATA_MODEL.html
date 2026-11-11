@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DATA_MODEL.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="مدل-داده-روابط-و-ماشینهای-وضعیت">مدل داده، روابط و ماشین‌های وضعیت</h1>
+<p>مرجع تایپ‌ها: <code>src/lib/domain/types.ts</code></p>
+<h2 id="۱-نمودار-موجودیتها-و-روابط">۱. نمودار موجودیت‌ها و روابط</h2>
+<pre class="hljs"><code><div>                                  ┌──────────────────┐
+                                  │ FabricCategory   │
+                                  │ unit             │
+                                  │ requiredSpecs[]  │
+                                  │ optionalSpecs[]  │
+                                  └────────┬─────────┘
+                                           │ 1
+                                           │
+                                           │ n
+┌──────────────┐  1      1 ┌──────────────┐│      ┌────────────────────┐
+│ User         ├───────────┤ Business     ││   n  │ ListingImage       │
+│ role         │           │ Profile      ││ ┌────┤ isDefectEvidence   │
+│ email        │           │ businessName ││ │  1 └────────────────────┘
+└──┬────────┬──┘           └──────────────┘│ │
+   │ 1      │ 1                            │ │
+   │        │          ┌───────────────────┴─┴──────────┐
+   │        └─────────►│ FabricListing                  │
+   │  (seller)       n │ code, specs, qualityGrade      │
+   │                   │ totalQuantity                  │
+   │                   │ availableQuantity              │
+   │                   │ reservedQuantity               │   1      n ┌──────────────────────┐
+   │                   │ soldQuantity                   ├───────────►│ InventoryTransaction │
+   │                   │ minOrderQuantity, status       │            │ kind, quantity       │
+   │                   └───────┬────────────────────────┘            │ snapshot{…}          │
+   │ 1                      1  │                                     └──────────────────────┘
+   │  (buyer)                  │ n
+   │        ┌──────────────────┴───────────┐  1    1 ┌─────────────┐
+   └───────►│ PurchaseRequest              ├────────►│ PriceOffer  │
+          n │ code, quantity, status       │         │ unitPrice   │
+            │ rejectionReason              │         │ quantity    │
+            └──────────────┬───────────────┘         └─────────────┘
+                         1 │
+                         1 ▼
+            ┌──────────────────────────────┐  1    n ┌──────────────┐
+            │ Order                        ├────────►│ Payment      │
+            │ code, quantity, unitPrice    │         │ gateway      │
+            │ totalAmount, status          │         │ status, ref  │
+            └──────────────┬───────────────┘         └──────────────┘
+                         1 │
+                           │ n
+                  ┌────────▼─────────┐
+                  │ OrderHistory     │
+                  │ from → to, note  │
+                  └──────────────────┘
+
+موجودیت مستقل:  FieldInterview (alias, side, provenance, verdicts{H1…H9})
+</div></code></pre>
+<h2 id="۲-ناوردای-یکپارچگی-موجودی">۲. ناوردای یکپارچگی موجودی</h2>
+<pre class="hljs"><code><div>totalQuantity = availableQuantity + reservedQuantity + soldQuantity
+availableQuantity ≥ 0 ,  reservedQuantity ≥ 0 ,  soldQuantity ≥ 0
+</div></code></pre>
+<p>تنها سه عملیات مجاز روی دفتر موجودی وجود دارد
+(<code>src/lib/domain/inventory.ts</code>):</p>
+<table>
+<thead>
+<tr>
+<th>عملیات</th>
+<th>انتقال</th>
+<th>محرک</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reserve</code></td>
+<td>قابل عرضه → رزروشده</td>
+<td>ایجاد سفارش پس از تأیید خریدار</td>
+</tr>
+<tr>
+<td><code>release</code></td>
+<td>رزروشده → قابل عرضه</td>
+<td>پرداخت ناموفق یا انصراف</td>
+</tr>
+<tr>
+<td><code>commit</code></td>
+<td>رزروشده → فروخته‌شده</td>
+<td>پرداخت موفق</td>
+</tr>
+</tbody>
+</table>
+<p>هر عملیات پیش از اعمال، کفایت مقدار را بررسی می‌کند و پس از اعمال، ناوردا را
+دوباره می‌سنجد؛ در صورت نقض، تغییر برگشت داده می‌شود و خطای تجاری برمی‌گردد.</p>
+<h2 id="۳-ماشین-وضعیت-آگهی">۳. ماشین وضعیت آگهی</h2>
+<pre class="hljs"><code><div>draft ──► pending ──► active ──► paused ──► active
+                 │        │
+                 │        ├──► sold_out ──► paused
+                 │        └──► rejected
+                 └──► rejected ──► pending
+</div></code></pre>
+<p>گذار <code>active → sold_out</code> به صورت خودکار و بر پایه دفتر موجودی محاسبه می‌شود
+(تابع <code>deriveListingStatus</code>): وقتی قابل عرضه و رزرو صفر شوند و فروش رخ داده باشد.</p>
+<h2 id="۴-ماشین-وضعیت-درخواست-خرید">۴. ماشین وضعیت درخواست خرید</h2>
+<pre class="hljs"><code><div>pending ──► awaiting_buyer ──► converted
+   │  │              │
+   │  │              └──► withdrawn
+   │  ├──► rejected (با دلیل اجباری)
+   │  └──► withdrawn
+</div></code></pre>
+<p>نکته: هیچ گذاری از <code>rejected</code>، <code>converted</code> یا <code>withdrawn</code> به بیرون وجود ندارد؛
+این وضعیت‌ها پایانی‌اند.</p>
+<h2 id="۵-ماشین-وضعیت-سفارش">۵. ماشین وضعیت سفارش</h2>
+<pre class="hljs"><code><div>awaiting_payment ──► paid              (رزرو → فروخته‌شده)
+        │
+        ├──► payment_failed            (رزرو → قابل عرضه)
+        └──► cancelled                 (رزرو → قابل عرضه)
+</div></code></pre>
+<p>هر سه وضعیت پایانی‌اند؛ تلاش برای پرداخت دوباره رد می‌شود.</p>
+<h2 id="۶-انواع-تراکنش-موجودی">۶. انواع تراکنش موجودی</h2>
+<table>
+<thead>
+<tr>
+<th>نوع</th>
+<th>معنا</th>
+<th>مرجع</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>initial</code></td>
+<td>ثبت موجودی اولیه هنگام ایجاد آگهی</td>
+<td><code>listing</code></td>
+</tr>
+<tr>
+<td><code>reserve</code></td>
+<td>رزرو مقدار برای یک سفارش</td>
+<td><code>order</code></td>
+</tr>
+<tr>
+<td><code>release</code></td>
+<td>آزادسازی رزرو</td>
+<td><code>order</code></td>
+</tr>
+<tr>
+<td><code>commit</code></td>
+<td>قطعی‌سازی فروش</td>
+<td><code>order</code></td>
+</tr>
+<tr>
+<td><code>adjust</code></td>
+<td>اصلاح دستی موجودی (در فاز ۱ استفاده نشده)</td>
+<td><code>listing</code></td>
+</tr>
+</tbody>
+</table>
+<p>هر رکورد یک <code>snapshot</code> از وضعیت دفتر پس از همان تراکنش نگه می‌دارد؛ بنابراین
+ناوردا در هر نقطه از تاریخ قابل بازرسی است.</p>
+<h2 id="۷-فیلدهای-فنی-به-تفکیک-دسته">۷. فیلدهای فنی به تفکیک دسته</h2>
+<table>
+<thead>
+<tr>
+<th>دسته</th>
+<th>واحد</th>
+<th>فیلدهای الزامی</th>
+<th>فیلدهای اختیاری</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>پارچه پوشاک</td>
+<td>متر</td>
+<td>الیاف، عرض، گراماژ، رنگ، کاربرد</td>
+<td>طرح، فینیش، متراژ طاقه</td>
+</tr>
+<tr>
+<td>پارچه مبلمان</td>
+<td>متر</td>
+<td>الیاف، عرض، گراماژ، رنگ، چرخه سایش</td>
+<td>طرح، فینیش، ضد شعله، متراژ طاقه</td>
+</tr>
+<tr>
+<td>پارچه پرده‌ای</td>
+<td>متر</td>
+<td>الیاف، عرض، رنگ، کاربرد</td>
+<td>گراماژ، طرح، فینیش، ضد شعله، متراژ طاقه</td>
+</tr>
+<tr>
+<td>تزئینی و رومیزی</td>
+<td>متر</td>
+<td>الیاف، عرض، رنگ</td>
+<td>گراماژ، طرح، فینیش، متراژ طاقه</td>
+</tr>
+<tr>
+<td>صنعتی و فنی</td>
+<td>کیلوگرم</td>
+<td>الیاف، عرض، گراماژ، کاربرد</td>
+<td>فینیش، ضد شعله، رنگ</td>
+</tr>
+<tr>
+<td>آستری و لایی</td>
+<td>متر</td>
+<td>الیاف، عرض، رنگ</td>
+<td>گراماژ، فینیش، متراژ طاقه</td>
+</tr>
+</tbody>
+</table>
+<h2 id="۸-داده-پایه-seed">۸. داده پایه (Seed)</h2>
+<table>
+<thead>
+<tr>
+<th>موجودیت</th>
+<th>تعداد</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>دسته پارچه</td>
+<td>۶</td>
+</tr>
+<tr>
+<td>کاربر (۲ فروشنده، ۲ خریدار، ۱ مدیر)</td>
+<td>۵</td>
+</tr>
+<tr>
+<td>پرونده کسب‌وکار</td>
+<td>۴</td>
+</tr>
+<tr>
+<td>آگهی (۸ فعال، ۱ در انتظار تأیید، ۱ درجه C)</td>
+<td>۱۰</td>
+</tr>
+<tr>
+<td>تصویر آگهی</td>
+<td>۲۳</td>
+</tr>
+<tr>
+<td>درخواست خرید باز</td>
+<td>۲</td>
+</tr>
+<tr>
+<td>رکورد مصاحبه با برچسب «نمونه قالب»</td>
+<td>۳</td>
+</tr>
+</tbody>
+</table>
+<p>مقادیر فنی داده پایه در بازه‌های متعارف صنعت نساجی انتخاب شده‌اند (عرض ۱۴۰ تا ۳۰۰
+سانتی‌متر، گراماژ ۶۸ تا ۴۸۰، سایش ۴۵٬۰۰۰ و ۸۰٬۰۰۰ چرخه) و هیچ کسب‌وکار واقعی در
+آن‌ها نام‌برده نشده است.</p>
+
+</body>
+</html>

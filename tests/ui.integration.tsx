@@ -597,6 +597,91 @@ await test('UI-18', 'ناوبری دوگانه هر دو بخش پرونده و 
   await unmount();
 });
 
+/* ========================================================================== */
+/* UI-19 — پیمایش ریل فهرست پرونده (آزمون بازگشتی باگ هدایت به صفحه نخست)      */
+/* ========================================================================== */
+
+await test('UI-19', 'کلیک روی هر مورد فهرست پرونده، به همان لوح می‌رود و نه به صفحه نخست', async () => {
+  seedWithSession(null);
+  await mount('/dossier');
+
+  const rail = document.querySelector('nav[aria-label="فهرست لوح‌های پرونده"]');
+  assert(!!rail, 'ریل ناوبری پرونده پیدا نشد');
+  const items = [...rail!.querySelectorAll('a')];
+  assert(items.length === 10, `ریل باید ۱۰ مورد داشته باشد، ${items.length} مورد پیدا شد`);
+
+  /*
+   * ریشه باگ: پیوندها به شکل href="#waste" بودند. سامانه روی HashRouter کار
+   * می‌کند و کل مسیر در هش نشانی است؛ پس لنگر خام، مسیر را به «/waste» تبدیل
+   * می‌کرد و مسیر ناشناخته به صفحه نخست هدایت می‌شد.
+   */
+  for (const item of items) {
+    const href = item.getAttribute('href') ?? '';
+    assert(
+      href.startsWith('#/dossier#'),
+      `پیوند ریل باید مسیرِ آگاه به HashRouter باشد، ولی «${href}» است`,
+    );
+  }
+
+  // کلیک روی چند لوح مختلف: هر بار باید در پرونده بمانیم و هش هم‌زمان شود
+  const expectHashAfterClick = async (index: number, id: string, headline: string) => {
+    await interact(() => click(items[index]));
+    assert(
+      hasText('فهرست پرونده'),
+      `پس از کلیک روی «${id}» ریل پرونده ناپدید شد — احتمالاً به صفحه دیگری هدایت شده‌ایم`,
+    );
+    assert(
+      !hasText('موجودی مازاد، فرصت یک معامله جدید'),
+      `کلیک روی «${id}» به صفحه نخست هدایت شد (شعار صفحه فرود نمایش داده شد)`,
+    );
+    assert(document.getElementById(id) !== null, `لوح «${id}» در صفحه موجود نیست`);
+    assert(hasText(headline), `محتوای لوح «${id}» نمایش داده نشد`);
+  };
+
+  await expectHashAfterClick(2, 'waste', 'زمان و پولی که در مسیر سنتی خرج می‌شود');
+  await expectHashAfterClick(4, 'validation', 'چارچوب و ابزار اعتبارسنجی');
+  await expectHashAfterClick(9, 'revenue', 'فرضیه‌های درآمدی و آنچه عامدانه ساخته نشده است');
+  await expectHashAfterClick(1, 'problem', 'هشت اصطکاک وضع موجود');
+
+  // کلیک دوباره روی همان مورد نباید وضعیت را خراب کند
+  await expectHashAfterClick(1, 'problem', 'هشت اصطکاک وضع موجود');
+  await unmount();
+});
+
+/* ========================================================================== */
+/* UI-20 — پیمایش به لوح پرونده از بیرون و رفت‌وبرگشت میان بخش‌ها               */
+/* ========================================================================== */
+
+await test('UI-20', 'پیوند مستقیم به یک لوح و بازگشت از بخش ب، درست کار می‌کند', async () => {
+  seedWithSession(null);
+
+  // پیوند عمیق مستقیم به یک لوح
+  await mount('/dossier');
+  assert(hasText('فهرست پرونده'), 'پرونده بارگذاری نشد');
+  assert(document.getElementById('journey') !== null, 'لوح نقشه سفر در صفحه نیست');
+  await unmount();
+
+  // رفتن به بخش ب و بازگشت به بخش الف، سپس کلیک روی ریل
+  await mount('/mvp');
+  assert(hasText('محیط عملیاتی تارنو'), 'بخش ب بارگذاری نشد');
+  const dossierLink = [...document.querySelectorAll('a')].find((a) =>
+    (a.textContent ?? '').includes('بخش الف'),
+  );
+  assert(!!dossierLink, 'پیوند بخش الف در ناوبری پیدا نشد');
+  await interact(() => click(dossierLink!));
+  assert(hasText('فهرست پرونده'), 'بازگشت به بخش الف انجام نشد');
+
+  const rail = document.querySelector('nav[aria-label="فهرست لوح‌های پرونده"]')!;
+  const items = [...rail.querySelectorAll('a')];
+  await interact(() => click(items[3]));
+  assert(hasText('سفر کنونی خریدار، بدون تارنو'), 'کلیک ریل پس از جابه‌جایی بین بخش‌ها کار نکرد');
+  assert(
+    !hasText('موجودی مازاد، فرصت یک معامله جدید'),
+    'کلیک ریل پس از جابه‌جایی بین بخش‌ها به صفحه نخست هدایت شد',
+  );
+  await unmount();
+});
+
 /* --------------------------------- گزارش --------------------------------- */
 
 console.log(`\n=== نتیجه: ${passed} موفق، ${failed} ناموفق از ${passed + failed} مورد ===\n`);

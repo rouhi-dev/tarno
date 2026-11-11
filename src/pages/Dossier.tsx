@@ -3,7 +3,8 @@
  * ده لوح پیوسته با ریل ناوبری چسبان و نوار پیشرفت مطالعه.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { BRAND, DIFFERENTIATORS } from '../lib/content/brand';
 import { MATURE_IDEA } from '../lib/content/matureIdea';
@@ -23,6 +24,8 @@ import { SectionShell } from '../components/layout/SectionShell';
 import { Badge, Note, cx } from '../components/ui/primitives';
 import { Reveal } from '../components/ui/motion';
 import { faNum } from '../lib/format';
+
+const DOSSIER_PATH = '/dossier';
 
 const SECTIONS = [
   { id: 'overview', label: 'خلاصه و روش‌شناسی', badge: 'پایه' },
@@ -135,8 +138,33 @@ const OverviewSection = () => (
   </SectionShell>
 );
 
+/** مسیر یک لوح به شکلی که HashRouter می‌فهمد: #/dossier#<id> */
+const sectionHref = (id: string) => `#${DOSSIER_PATH}#${id}`;
+
 export const Dossier = () => {
   const active = useActiveSection();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  /**
+   * سامانه روی HashRouter کار می‌کند، یعنی کل مسیر در هش نشانی قرار دارد
+   * (مثل `#/dossier`). بنابراین یک لنگر خام مثل `href="#waste"` هش را بازنویسی
+   * می‌کند، مسیریاب آن را مسیر `/waste` می‌خواند و چون چنین مسیری وجود ندارد به
+   * صفحه نخست هدایت می‌شود. پس پیمایش باید از خود مسیریاب عبور کند تا هش در
+   * نشانی هم هم‌زمان به‌روز شود.
+   */
+  const jumpToSection = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+    // کلیک با کلید کمکی یا دکمه میانی به رفتار پیش‌فرض مرورگر واگذار می‌شود.
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    event.preventDefault();
+
+    if (location.hash === `#${id}`) {
+      // هش تغییر نمی‌کند، پس ناظر مسیر دوباره اجرا نمی‌شود؛ خودمان پیمایش می‌کنیم.
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    navigate({ pathname: DOSSIER_PATH, hash: id });
+  };
 
   return (
     <main>
@@ -153,7 +181,9 @@ export const Dossier = () => {
             return (
               <a
                 key={s.id}
-                href={`#${s.id}`}
+                href={sectionHref(s.id)}
+                onClick={(event) => jumpToSection(event, s.id)}
+                aria-current={isActive ? 'true' : undefined}
                 className={cx(
                   'group flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[12.5px] transition-colors',
                   isActive ? 'bg-indigo-100 text-indigo-900' : 'text-body hover:bg-raised',
