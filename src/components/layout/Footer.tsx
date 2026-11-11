@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BRAND } from '../../lib/content/brand';
+import { BRAND, STUDENT } from '../../lib/content/brand';
 
 export const Footer = () => (
   <footer className="no-print mt-16 border-t border-line bg-surface">
@@ -29,6 +29,11 @@ export const Footer = () => (
           پروژه درس تجارت الکترونیکی — دانشگاه یزد، دانشکده مهندسی کامپیوتر. تحویل فاز ۱:
           پرونده تحلیلی کسب‌وکار و محصول کمینه پذیرفتنی.
         </p>
+        <p className="text-body">
+          دانشجو: <strong className="font-medium text-ink">{STUDENT.name}</strong> — شماره
+          دانشجویی <span className="num">{STUDENT.id}</span>
+        </p>
+        <p>استاد درس: {STUDENT.supervisor}</p>
         <p>
           همه تراکنش‌های مالی در این سامانه شبیه‌سازی‌شده‌اند؛ هیچ درگاه پرداخت واقعی یا داده
           بانکی و هویتی در آن وجود ندارد.

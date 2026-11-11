@@ -4,6 +4,7 @@
   "version": "1.0.0-phase1",
   "type": "module",
   "description": "تارنو — بازارگاه تخصصی مدیریت و فروش موجودی مازاد پارچه (فاز ۱)",
+  "author": "فاطمه صمدی (40134613) — دانشگاه یزد",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

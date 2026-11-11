@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { STUDENT } from '../lib/content/brand';
 import { OUT_OF_SCOPE, SCENARIOS } from '../lib/content/scenarios';
 import { TEST_CASES, TEST_SUMMARY, type TestCase } from '../lib/content/tests';
 import { Badge, Button, Note, Stat, cx } from '../components/ui/primitives';
@@ -171,6 +172,15 @@ export const Report = () => {
         <p className="mt-3 max-w-reading text-[14px] leading-8 text-body">
           این صفحه، پیوند میان تحلیل کسب‌وکار و کد را مستند می‌کند: هر سناریو با معیار پذیرش
           Given-When-Then، مرجع خود در سورس‌کد و مسیر آزمون در سامانه آمده است.
+        </p>
+        <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-muted">
+          <span>
+            دانشجو: <span className="font-medium text-ink">{STUDENT.name}</span>
+          </span>
+          <span aria-hidden>·</span>
+          <span className="num">شماره دانشجویی: {STUDENT.id}</span>
+          <span aria-hidden>·</span>
+          <span>{STUDENT.phase}</span>
         </p>
       </Reveal>
 
