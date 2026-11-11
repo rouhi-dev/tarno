@@ -3,7 +3,7 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22"
 
 # مسیریابی از نوع HashRouter است و به بازنویسی مسیر نیاز ندارد؛
 # این قاعده فقط برای اطمینان در صورت مهاجرت آینده به BrowserRouter است.
